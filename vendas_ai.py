@@ -44,4 +44,4 @@ if prompt := st.chat_input("Escreve aqui..."):
                 st.markdown(res)
             st.session_state.messages.append({"role": "assistant", "content": res})
         except:
-            st.error("Erro. Verifica se a tua API KEY está bem posta no site.")DDD
+            st.error("Erro. Verifica se a tua API KEY está bem posta no site.")
