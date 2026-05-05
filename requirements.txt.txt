@@ -5,3 +5,4 @@ PyPDF2
 pydub
 youtube-transcript-api
 Pillow
+fpdf
