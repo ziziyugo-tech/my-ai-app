@@ -6,7 +6,7 @@ st.title("My Premium AI Coder")
 st.write("Welcome! This app uses Qwen-32B to fix your code.")
 
 # Get the key from the environment
-api_key = api_key = st.secrets["OPENROUTER_API_KEY"]
+api_key = st.secrets["OPENROUTER_API_KEY"]
 
 user_input = st.text_area("Paste your messy code here:")
 
