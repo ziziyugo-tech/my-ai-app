@@ -1,64 +1,47 @@
 import streamlit as st
 import requests
 
-# 1. Configuração da Página - Focada no Chat
-st.set_page_config(page_title="AI Multi-Tool Chat", page_icon="🧠", layout="centered")
+st.set_page_config(page_title="AI Chat", layout="centered")
+st.title("🧠 AI Chat Multi-Ficheiros")
 
-st.title("🧠 AI Multi-Tool Chat")
-st.info("Podes enviar mensagens ou anexar ficheiros (PDF, Áudio, Imagem) na barra lateral.")
-
-# 2. Chave da API
+# Chave que está no site (Secrets)
 api_key = st.secrets.get("OPENROUTER_API_KEY", "")
 
-# 3. BARRA LATERAL (Para os ficheiros que queres que a IA "leia")
+# Barra lateral para os ficheiros
 with st.sidebar:
-    st.header("📎 Anexar Conteúdo")
-    uploaded_file = st.file_uploader("Sobe ficheiros (PDF, MP3, etc.)", 
+    st.header("📎 Anexar")
+    uploaded_file = st.file_uploader("Sobe PDF, Voz, Imagem...", 
                                     type=["pdf", "txt", "png", "jpg", "mp3", "mp4"])
-    youtube_url = st.text_input("🔗 Link do YouTube")
-    
-    contexto_ficheiro = ""
-    if uploaded_file:
-        st.success(f"Lido: {uploaded_file.name}")
-        # Placeholder para a extração real de conteúdo
-        contexto_ficheiro = f"\n[Anexo: {uploaded_file.name}]"
-    if youtube_url:
-        contexto_ficheiro += f"\n[Link YouTube: {youtube_url}]"
+    yt_url = st.text_input("🔗 Link do YouTube")
 
-# 4. MEMÓRIA DO CHAT
+# Histórico das mensagens
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Exibir histórico de mensagens
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.markdown(msg["content"])
 
-# 5. INPUT DO CHAT (A tua Chat Box)
-if prompt := st.chat_input("Diz qualquer coisa..."):
-    # Adicionar o contexto do ficheiro/link à pergunta
-    prompt_completo = f"{prompt} {contexto_ficheiro}"
-    
-    # Mostrar a mensagem do utilizador
+# Caixa de Chat
+if prompt := st.chat_input("Escreve aqui..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
     # Resposta da IA
-    with st.spinner("A processar..."):
+    with st.spinner("A responder..."):
         try:
             response = requests.post(
                 url="https://openrouter.ai/api/v1/chat/completions",
                 headers={"Authorization": f"Bearer {api_key}"},
                 json={
                     "model": "qwen/qwen-2.5-coder-32b-instruct",
-                    "messages": st.session_state.messages + [{"role": "user", "content": f"Contexto extra: {contexto_ficheiro}"}]
+                    "messages": st.session_state.messages
                 }
             )
-            answer = response.json()['choices'][0]['message']['content']
-            
+            res = response.json()['choices'][0]['message']['content']
             with st.chat_message("assistant"):
-                st.markdown(answer)
-            st.session_state.messages.append({"role": "assistant", "content": answer})
+                st.markdown(res)
+            st.session_state.messages.append({"role": "assistant", "content": res})
         except:
-            st.error("Erro na API. Verifica se configuraste a chave nos Secrets.")
+            st.error("Erro. Verifica se a tua API KEY está bem posta no site.")DDD
