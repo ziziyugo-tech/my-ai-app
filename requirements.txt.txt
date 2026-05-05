@@ -3,9 +3,3 @@ requests
 fpdf
 Pillow
 PyPDF2
-pandas
-ydub
-youtube-transcript-api
-Pillow
-fpdf
-pydub
