@@ -3,22 +3,12 @@ import requests
 import base64
 from PIL import Image
 from io import BytesIO
+import PyPDF2
+from fpdf import FPDF  # <--- Vamos deixar isto direto para forçar o erro real se houver
 
-# Tenta importar o FPDF, se falhar avisa o utilizador
-try:
-    from fpdf import FPDF
-except ImportError:
-    st.error("Instalando componentes... Por favor, aguarde 1 minuto e atualize a página.")
-
-# Tenta importar PyPDF2 para ler ficheiros PDF
-try:
-    import PyPDF2
-except ImportError:
-    pass
-
-# 1. Configuração Visual da Página
+# Configuração da Página
 st.set_page_config(
-    page_title="AI Chat & PDF Professional",
+    page_title="AI Chat Professional",
     layout="centered",
     page_icon="🤖"
 )
