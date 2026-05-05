@@ -1,8 +1,11 @@
 streamlit
 requests
-pandas
+fpdf
+Pillow
 PyPDF2
-pydub
+pandas
+ydub
 youtube-transcript-api
 Pillow
 fpdf
+pydub
